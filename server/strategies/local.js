@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import * as argon2 from "argon2";
-import client from "../dbPool.js";
+import userModel from "../users/userModel.js";
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -9,12 +9,13 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const findUser = await client.query(`
-      SELECT *
-      FROM users
-      WHERE id = ${id}
-      `);
-    console.log(findUser, findUser.rows);
+    // const findUser = await client.query(`
+    //   SELECT *
+    //   FROM users
+    //   WHERE id = ${id}
+    //   `);
+    const findUser = await userModel.findOne({ _id: id })
+    // console.log(findUser, findUser.rows);
     if (!findUser) {
       throw new Error("Invalid creds.");
     }
@@ -27,13 +28,14 @@ passport.deserializeUser(async (id, done) => {
 export default passport.use(
   new Strategy({ usernameField: "email" }, async (email, password, done) => {
     try {
-      const findUser = await client.query(`
-      SELECT *
-      FROM users
-      WHERE email = '${email}'  
-      `);
+      // const findUser = await client.query(`
+      // SELECT *
+      // FROM users
+      // WHERE email = '${email}'  
+      // `);
       // console.log(findUser, findUser.rows);
-      const user = findUser.rows.length === 1 ? findUser.rows[0] : null
+
+    const user = await userModel.findOne({ email: email })
       if (!user) {
         // throw new Error("Invalid creds.")
         done(null, false, { success: false, message: "invalid creds." });

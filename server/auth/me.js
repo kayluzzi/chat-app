@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import client from "../dbPool.js"
 
 
 const me = async (req, res, next) => {

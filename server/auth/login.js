@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import * as argon2 from "argon2";
-import client from "../dbPool.js";
+import userModel from "../users/userModel.js";
 
 const jwtSecret = process.env.JWT_SECRET || "secret";
 const tokenExpiration = process.env.TOKEN_EXPIRATION || 60 * 60 * 24 * 1; // 1days
@@ -24,19 +24,19 @@ const login = async (req, res, next) => {
   const { id } = req.user;
   const token = { token: createToken({ id }) };
   try {
-    const updateUser = await client.query(`
-      UPDATE users
-      SET tokens = '[ { "token": "${token.token}" } ]'
-      WHERE id = ${id}
-      `);
+    // const updateUser = await client.query(`
+    //   UPDATE users
+    //   SET tokens = '[ { "token": "${token.token}" } ]'
+    //   WHERE id = ${id}
+    //   `);
 
-    const getUser = await client.query(`
-      SELECT *
-      FROM users
-      WHERE id = ${id}
-      `);
-    console.log(getUser, getUser.rows);
-    const user = getUser.rows.length === 1 ? getUser.rows[0] : null;
+    // const getUser = await client.query(`
+    //   SELECT *
+    //   FROM users
+    //   WHERE id = ${id}
+    //   `);
+    const user = await userModel.findOne({ _id: id })
+    
 
     res.cookie("token", token, cookieOptions);
     res

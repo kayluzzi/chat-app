@@ -2,13 +2,13 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import passport from 'passport'
+import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import './strategies/local.js'
 import './strategies/jwt.js'
 import authIndex from './auth/index.js'
 import userIndex from "./users/userIndex.js"
-import taskIndex from "./tasks/taskIndex.js"
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -36,9 +36,15 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authIndex)
 app.use('/user', userIndex)
-app.use('/task', taskIndex)
 
 try {
+  const mongoURL = process.env.MONGODB_CONNECTION_STRING || ""
+console.log("mongoURL", mongoURL)
+const mainDB = async () => {
+  await mongoose.connect(mongoURL)
+  console.log(`Connected to ${mongoURL}`)
+}
+mainDB().catch(err => console.log(err))
   app.listen(port, () => {
     console.log(`Project Tracker app listening on port ${port}`)
   })

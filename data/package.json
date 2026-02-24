@@ -1,0 +1,21 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "seedUser.js",
+  "scripts": {
+    "seed:user": "node seedUsers.js",
+    "seed:templates": "node seedTemp.js",
+    "seed:tasks": "node seedTasks.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@faker-js/faker": "^10.2.0",
+    "argon2": "^0.44.0",
+    "axios": "^1.13.2",
+    "dotenv": "^17.2.3"
+  }
+}

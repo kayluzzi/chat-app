@@ -1,6 +1,7 @@
 import passport from 'passport'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
-import client from '../dbPool.js'
+import userModel from '../users/userModel.js'
+
 
 const jwtSecret = process.env.JWT_SECRET || 'secret'
 
@@ -19,12 +20,12 @@ passport.use(
       const token = req.headers.authorization.split(' ')[1]
 
       // if (!user || !user.tokens.find((t) => t.token === token)) {
-      const getUser = await client.query(`
-      SELECT *
-      FROM users
-      WHERE id = ${jwtPayload.id}
-      `)
-      const user = getUser.rows.length === 1 ? getUser.rows[0] : null;
+      // const getUser = await client.query(`
+      // SELECT *
+      // FROM users
+      // WHERE id = ${jwtPayload.id}
+      // `)
+      const user = await userModel.findOne({ _id: jwtPayload._id, "tokens.token": token })
       console.log(user)
 
 
