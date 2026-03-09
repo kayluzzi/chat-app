@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
 import { login } from "./auth/authSlice";
-import { useEffectEvent } from "react";
 
 const Login = () => {
   const [loginForm, setLoginForm] = useState({
@@ -16,13 +14,10 @@ const Login = () => {
   const navigate = useNavigate();
 
   const { loading, isLoggedIn, user } = useSelector((state) => state.auth);
-  console.log(loading, isLoggedIn, user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginForm);
-    // const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/login`, loginForm)
-    // console.log(response.data)
+   
 
     dispatch(login(loginForm));
   };

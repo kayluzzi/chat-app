@@ -2,13 +2,15 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import passport from 'passport'
-import mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import mongoose from 'mongoose'
 import './strategies/local.js'
 import './strategies/jwt.js'
 import authIndex from './auth/index.js'
 import userIndex from "./users/userIndex.js"
+import channelIndex from './channels/channelIndex.js'
+import messageIndex from './messages/messageIndex.js'
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -36,17 +38,21 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authIndex)
 app.use('/user', userIndex)
+app.use('/channel', channelIndex)
+app.use('/message', messageIndex)
 
 try {
-  const mongoURL = process.env.MONGODB_CONNECTION_STRING || ""
-console.log("mongoURL", mongoURL)
-const mainDB = async () => {
-  await mongoose.connect(mongoURL)
-  console.log(`Connected to ${mongoURL}`)
-}
-mainDB().catch(err => console.log(err))
+  const mongodbURI = process.env.MONGODB_CONNECTION_STRING || ""
+  await mongoose.connect(mongodbURI)
+  console.log(`Chat app connected to database at ${mongodbURI}`)
+// console.log("mongoURL", mongoURL)
+// const mainDB = async () => {
+//   await mongoose.connect(mongoURL)
+//   console.log(`Connected to ${mongoURL}`)
+// }
+// mainDB().catch(err => console.log(err))
   app.listen(port, () => {
-    console.log(`Project Tracker app listening on port ${port}`)
+    console.log(`Chat app listening on port ${port}`)
   })
 } catch (err) {
   console.log(err)

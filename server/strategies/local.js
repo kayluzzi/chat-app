@@ -15,6 +15,7 @@ passport.deserializeUser(async (id, done) => {
     //   WHERE id = ${id}
     //   `);
     const findUser = await userModel.findOne({ _id: id })
+    console.log(findUser, findUser.rows)
     // console.log(findUser, findUser.rows);
     if (!findUser) {
       throw new Error("Invalid creds.");
@@ -28,22 +29,17 @@ passport.deserializeUser(async (id, done) => {
 export default passport.use(
   new Strategy({ usernameField: "email" }, async (email, password, done) => {
     try {
-      // const findUser = await client.query(`
-      // SELECT *
-      // FROM users
-      // WHERE email = '${email}'  
-      // `);
-      // console.log(findUser, findUser.rows);
 
-    const user = await userModel.findOne({ email: email })
+    const findUser = await userModel.findOne({ email: email })
+    const user = findUser ? findUser : null
       if (!user) {
-        // throw new Error("Invalid creds.")
-        done(null, false, { success: false, message: "invalid creds." });
+      
+        done(null, false, { message: "invalid credentials." });
       }
       const isPasswordCorrect = await argon2.verify(user.password, password);
       if (!isPasswordCorrect) {
-        // throw new Error("Invalid creds.")
-        done(null, false, { success: false, message: "invalid creds." });
+       
+        done(null, false, { success: false, message: "invalid credentials." });
       }
       done(null, user);
     } catch (err) {

@@ -4,10 +4,10 @@ import login from "./login.js";
 import me from "./me.js";
 import logout from "./logout.js";
 
-const authIndex = Router();
+const index = Router();
 
-authIndex.post("/login", passport.authenticate("local"), login)
-authIndex.get("/me", passport.authenticate("jwt", { session: false }), me)
-authIndex.post("/logout", passport.authenticate("jwt", { session: false }), logout)
+index.post("/login", passport.authenticate("local"), login)
+index.get("/me", passport.authenticate("jwt", { session: false }), me)
+index.post("/logout", passport.authenticate("jwt", { session: false }), logout)
 
-export default authIndex;
+export default index;

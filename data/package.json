@@ -5,8 +5,7 @@
   "main": "seedUser.js",
   "scripts": {
     "seed:user": "node seedUsers.js",
-    "seed:templates": "node seedTemp.js",
-    "seed:tasks": "node seedTasks.js"
+    "seed:channels": "node seedChannels.js"
   },
   "keywords": [],
   "author": "",

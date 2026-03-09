@@ -2,7 +2,7 @@ import userModel from "../users/userModel.js";
 
 
 const logout = async (req, res) => {
-  const { id } = req.user
+  // const { id } = req.user
   if (!req.user) {
     res.status(401).json({ success: false, message: "Not auth." })
   }
