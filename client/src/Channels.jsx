@@ -46,7 +46,7 @@ const Channels = () => {
               {channels.map((channel) => (
                 <>
                   {channel.icon.type === "google-icon-svg" && (
-                    <Link to={`/admin/messages/{channel.name}`}>
+                    <Link to={`/admin/messages/${channel.name}`}>
                     <li>
                       <button
                         className="is-drawer-close:tooltip is-drawer-close:tooltip-right"

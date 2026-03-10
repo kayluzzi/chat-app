@@ -16,7 +16,7 @@ const opts = {
 
 passport.use(
   new JwtStrategy(opts, async (req, jwtPayload, done) => {
-    const { _id } = jwtPayload
+    const { id } = jwtPayload
     try {
       const token = req.headers.authorization.split(' ')[1]
 
@@ -27,7 +27,7 @@ passport.use(
       // WHERE id = ${jwtPayload.id}
       // `)
       // const user = await userModel.findOne({ _id: jwtPayload.id, "tokens.token": token })
-      const user = await userModel.findOne({ _id})
+     const user = await userModel.findOne({ _id: id })
 console.log(user)
 
       if (!user) {
